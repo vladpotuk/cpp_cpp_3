@@ -157,13 +157,16 @@ namespace CompanyQueries
             return companies.Where(company => company.CEO.Split(' ').Last() == "White");
         }
 
-        
+
         public static IEnumerable<Company> GetCompaniesFoundedMoreThan2YearsAgo(Company[] companies)
         {
-            return companies.Where(company => (DateTime.Now - company.FoundationDate).TotalDays > 365 * 2);
+            var twoYearsAgo = DateTime.Now.AddYears(-2);
+            int daysInTwoYears = (twoYearsAgo.Year % 4 == 0 && (twoYearsAgo.Year % 100 != 0 || twoYearsAgo.Year % 400 == 0)) ? 366 : 365;
+            return companies.Where(company => (DateTime.Now - company.FoundationDate).TotalDays > daysInTwoYears);
         }
 
-        
+
+
         public static IEnumerable<Company> GetCompaniesFounded123DaysAgo(Company[] companies)
         {
             return companies.Where(company => (DateTime.Now - company.FoundationDate).TotalDays == 123);
